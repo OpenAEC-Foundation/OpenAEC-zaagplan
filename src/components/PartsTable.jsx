@@ -10,9 +10,9 @@ export default function PartsTable({ mode, results, selectedSheet }) {
   const sheet = results.sheets[selectedSheet] || results.sheets[0]
 
   return (
-    <div className="border-t border-gray-200 bg-white">
+    <div className="bg-oaec-bg-lighter" style={{ borderTop: '1px solid rgba(217, 119, 6, 0.15)' }}>
       <div className="p-4">
-        <h3 className="text-sm font-semibold text-violet mb-3 flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-oaec-accent mb-3 flex items-center gap-2">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="8" y1="6" x2="21" y2="6"/>
             <line x1="8" y1="12" x2="21" y2="12"/>
@@ -27,47 +27,48 @@ export default function PartsTable({ mode, results, selectedSheet }) {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="px-3 py-2 font-semibold text-gray-600 w-12">Nr.</th>
-                <th className="px-3 py-2 font-semibold text-gray-600">Onderdeel</th>
-                <th className="px-3 py-2 font-semibold text-gray-600 text-right">Lengte (mm)</th>
+              <tr className="bg-oaec-bg text-left">
+                <th className="px-3 py-2 font-semibold text-oaec-text-muted w-12">Nr.</th>
+                <th className="px-3 py-2 font-semibold text-oaec-text-muted">Onderdeel</th>
+                <th className="px-3 py-2 font-semibold text-oaec-text-muted text-right">Lengte (mm)</th>
                 {mode === '2d' && (
-                  <th className="px-3 py-2 font-semibold text-gray-600 text-right">Breedte (mm)</th>
+                  <th className="px-3 py-2 font-semibold text-oaec-text-muted text-right">Breedte (mm)</th>
                 )}
                 {mode === '2d' && (
-                  <th className="px-3 py-2 font-semibold text-gray-600 text-center">Nerf</th>
+                  <th className="px-3 py-2 font-semibold text-oaec-text-muted text-center">Nerf</th>
                 )}
-                <th className="px-3 py-2 font-semibold text-gray-600 text-right">Positie</th>
+                <th className="px-3 py-2 font-semibold text-oaec-text-muted text-right">Positie</th>
               </tr>
             </thead>
             <tbody>
               {sheet.parts.map((part, index) => (
                 <tr
                   key={index}
-                  className={`border-b border-gray-100 hover:bg-verdigris/5 transition-colors ${
-                    index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                  className={`hover:bg-oaec-accent/5 transition-colors ${
+                    index % 2 === 0 ? 'bg-oaec-bg-lighter' : 'bg-oaec-bg'
                   }`}
+                  style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.1)' }}
                 >
                   <td className="px-3 py-2">
-                    <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-white bg-violet rounded-full">
+                    <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-semibold text-oaec-bg bg-oaec-accent rounded-full">
                       {part.number}
                     </span>
                   </td>
-                  <td className="px-3 py-2 font-medium text-gray-700">
+                  <td className="px-3 py-2 font-medium text-oaec-text">
                     {part.name}
                   </td>
-                  <td className="px-3 py-2 text-gray-600 text-right font-mono">
+                  <td className="px-3 py-2 text-oaec-text-secondary text-right font-mono">
                     {part.length}
                   </td>
                   {mode === '2d' && (
-                    <td className="px-3 py-2 text-gray-600 text-right font-mono">
+                    <td className="px-3 py-2 text-oaec-text-secondary text-right font-mono">
                       {part.width}
                     </td>
                   )}
                   {mode === '2d' && (
                     <td className="px-3 py-2 text-center">
                       {part.grain ? (
-                        <span className="inline-flex items-center justify-center w-5 h-5 bg-verdigris/10 text-verdigris rounded">
+                        <span className="inline-flex items-center justify-center w-5 h-5 rounded" style={{ background: 'rgba(217, 119, 6, 0.1)', color: '#D97706' }}>
                           <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                             <polyline points="20 6 9 17 4 12"/>
                           </svg>
@@ -77,7 +78,7 @@ export default function PartsTable({ mode, results, selectedSheet }) {
                       )}
                     </td>
                   )}
-                  <td className="px-3 py-2 text-gray-500 text-right text-xs font-mono">
+                  <td className="px-3 py-2 text-oaec-text-muted text-right text-xs font-mono">
                     {mode === '2d'
                       ? `(${part.x}, ${part.y})`
                       : `${part.x} mm`
@@ -90,26 +91,26 @@ export default function PartsTable({ mode, results, selectedSheet }) {
         </div>
 
         {/* Totalen */}
-        <div className="mt-4 pt-4 border-t border-gray-200 flex items-center justify-between text-sm">
+        <div className="mt-4 pt-4 flex items-center justify-between text-sm" style={{ borderTop: '1px solid rgba(217, 119, 6, 0.15)' }}>
           <div className="flex items-center gap-6">
             <div>
-              <span className="text-gray-500">Totaal stukken:</span>
-              <span className="ml-2 font-semibold text-violet">{sheet.parts.length}</span>
+              <span className="text-oaec-text-muted">Totaal stukken:</span>
+              <span className="ml-2 font-semibold text-oaec-accent">{sheet.parts.length}</span>
             </div>
             <div>
-              <span className="text-gray-500">Benutting:</span>
+              <span className="text-oaec-text-muted">Benutting:</span>
               <span className={`ml-2 font-semibold ${
                 sheet.efficiency >= 80
-                  ? 'text-verdigris'
+                  ? 'text-oaec-success'
                   : sheet.efficiency >= 60
-                    ? 'text-yellow-600'
-                    : 'text-flaming-peach'
+                    ? 'text-oaec-warning'
+                    : 'text-oaec-danger'
               }`}>
                 {sheet.efficiency.toFixed(1)}%
               </span>
             </div>
           </div>
-          <div className="text-gray-500 text-xs">
+          <div className="text-oaec-text-muted text-xs">
             Restmateriaal: {(100 - sheet.efficiency).toFixed(1)}%
           </div>
         </div>

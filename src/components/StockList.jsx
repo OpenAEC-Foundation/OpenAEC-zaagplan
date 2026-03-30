@@ -96,7 +96,7 @@ export default function StockList({ mode, stock, setStock }) {
   return (
     <div className="mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-violet flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-oaec-accent flex items-center gap-2">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
           </svg>
@@ -104,7 +104,7 @@ export default function StockList({ mode, stock, setStock }) {
         </h3>
         <button
           onClick={() => setIsAdding(true)}
-          className="text-xs text-verdigris hover:text-verdigris-light font-medium flex items-center gap-1"
+          className="text-xs text-oaec-accent hover:text-oaec-accent-hover font-medium flex items-center gap-1"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="12" y1="5" x2="12" y2="19"/>
@@ -117,17 +117,17 @@ export default function StockList({ mode, stock, setStock }) {
       {/* Grouped stock items */}
       <div className="space-y-2">
         {groupedStock.length === 0 && !isAdding && (
-          <p className="text-sm text-gray-400 text-center py-4 bg-gray-50 rounded border border-dashed border-gray-200">
+          <p className="text-sm text-oaec-text-muted text-center py-4 bg-oaec-bg rounded" style={{ border: '1px dashed rgba(217, 119, 6, 0.2)' }}>
             Geen voorraad. Voeg {mode === '2d' ? 'plaatmateriaal' : 'balkmateriaal'} toe.
           </p>
         )}
 
         {groupedStock.map(group => (
-          <div key={group.name} className="border border-gray-200 rounded overflow-hidden">
+          <div key={group.name} className="rounded overflow-hidden" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
             {/* Type header - clickable */}
             <button
               onClick={() => toggleExpanded(group.name)}
-              className="w-full flex items-center justify-between p-3 bg-white hover:bg-gray-50 transition-colors"
+              className="w-full flex items-center justify-between p-3 bg-oaec-bg-lighter hover:bg-oaec-bg transition-colors"
             >
               <div className="flex items-center gap-2">
                 <svg 
@@ -139,26 +139,27 @@ export default function StockList({ mode, stock, setStock }) {
                 >
                   <polyline points="9 18 15 12 9 6"/>
                 </svg>
-                <span className="text-sm font-medium text-gray-700">{group.name}</span>
+                <span className="text-sm font-medium text-oaec-text">{group.name}</span>
                 <span className="text-xs text-gray-400">
                   ({group.items.length} {group.items.length === 1 ? 'maat' : 'maten'})
                 </span>
               </div>
-              <span className="text-sm font-semibold text-verdigris">
+              <span className="text-sm font-semibold text-oaec-accent">
                 {group.totalQuantity}×
               </span>
             </button>
 
             {/* Expanded items */}
             {expandedTypes[group.name] && (
-              <div className="border-t border-gray-100 bg-gray-50">
+              <div className="bg-oaec-bg" style={{ borderTop: '1px solid rgba(217, 119, 6, 0.1)' }}>
                 {group.items.map(item => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between px-3 py-2 border-b border-gray-100 last:border-b-0 group"
+                    className="flex items-center justify-between px-3 py-2 last:border-b-0 group"
+                    style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.1)' }}
                   >
                     <div className="flex items-center gap-3 pl-6">
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-oaec-text-secondary">
                         {mode === '2d'
                           ? `${item.length} × ${item.width} mm`
                           : `${item.length} mm`
@@ -166,26 +167,26 @@ export default function StockList({ mode, stock, setStock }) {
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <div className="flex items-center border border-gray-200 rounded bg-white">
+                      <div className="flex items-center rounded" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
                         <button
                           onClick={() => handleQuantityChange(item.id, -1)}
-                          className="px-2 py-1 text-gray-500 hover:text-violet hover:bg-gray-50"
+                          className="px-2 py-1 text-oaec-text-muted hover:text-oaec-accent hover:bg-oaec-accent/10"
                         >
                           -
                         </button>
-                        <span className="px-2 py-1 text-sm font-medium text-gray-700 border-x border-gray-200 min-w-[2.5rem] text-center">
+                        <span className="px-2 py-1 text-sm font-medium text-oaec-text min-w-[2.5rem] text-center" style={{ borderLeft: '1px solid rgba(217, 119, 6, 0.2)', borderRight: '1px solid rgba(217, 119, 6, 0.2)' }}>
                           {item.quantity}×
                         </span>
                         <button
                           onClick={() => handleQuantityChange(item.id, 1)}
-                          className="px-2 py-1 text-gray-500 hover:text-violet hover:bg-gray-50"
+                          className="px-2 py-1 text-oaec-text-muted hover:text-oaec-accent hover:bg-oaec-accent/10"
                         >
                           +
                         </button>
                       </div>
                       <button
                         onClick={() => handleRemove(item.id)}
-                        className="p-1 text-gray-400 hover:text-flaming-peach opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="p-1 text-oaec-text-muted hover:text-oaec-danger opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                           <line x1="18" y1="6" x2="6" y2="18"/>
@@ -202,7 +203,7 @@ export default function StockList({ mode, stock, setStock }) {
 
         {/* Add new item form */}
         {isAdding && (
-          <div className="p-3 bg-verdigris/5 border border-verdigris/30 rounded space-y-3">
+          <div className="p-3 rounded space-y-3" style={{ background: 'rgba(217, 119, 6, 0.05)', border: '1px solid rgba(217, 119, 6, 0.2)' }}>
             <div className="text-xs text-gray-500 mb-2">
               Voeg materiaal toe. Kleinste platen worden eerst gebruikt door het algoritme.
             </div>
@@ -260,13 +261,13 @@ export default function StockList({ mode, stock, setStock }) {
             <div className="flex gap-2">
               <button
                 onClick={handleAdd}
-                className="flex-1 py-2 text-sm font-medium text-white bg-verdigris rounded hover:bg-verdigris-light transition-colors"
+                className="flex-1 py-2 text-sm font-medium text-oaec-bg bg-oaec-accent rounded hover:bg-oaec-accent-hover transition-colors"
               >
                 Toevoegen
               </button>
               <button
                 onClick={() => setIsAdding(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-oaec-text-secondary bg-oaec-bg-lighter rounded hover:bg-oaec-bg transition-colors"
               >
                 Annuleren
               </button>

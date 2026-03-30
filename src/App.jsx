@@ -447,7 +447,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
+    <div className="h-screen bg-oaec-bg flex flex-col overflow-hidden">
       {/* Header */}
       <Header 
         onSave={handleSave} 
@@ -462,7 +462,7 @@ function App() {
       {/* Main Content */}
       <div className="flex flex-1 min-h-0">
         {/* Sidebar */}
-        <aside className="w-96 bg-white border-r border-gray-200 flex flex-col min-h-0">
+        <aside className="w-96 bg-oaec-bg-lighter flex flex-col min-h-0" style={{ borderRight: '1px solid rgba(217, 119, 6, 0.15)' }}>
           {/* Settings Panel with Mode Toggle */}
           <SettingsPanel
             mode={mode}
@@ -501,31 +501,31 @@ function App() {
           </div>
 
           {/* Calculate Button */}
-          <div className="p-4 border-t border-gray-200 bg-white">
+          <div className="p-4 bg-oaec-bg-lighter" style={{ borderTop: '1px solid rgba(217, 119, 6, 0.15)' }}>
             {/* Statistics summary */}
             {results && results.sheets && results.sheets.length > 0 && (
-              <div className="mb-3 p-3 bg-gray-50 rounded-lg text-sm">
+              <div className="mb-3 p-3 bg-oaec-bg rounded-lg text-sm" style={{ border: '1px solid rgba(217, 119, 6, 0.15)' }}>
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <span className="text-gray-500">{mode === '2d' ? 'Platen:' : 'Balken:'}</span>
-                    <span className="ml-1 font-semibold text-violet">{results.summary.totalSheets}</span>
+                    <span className="text-oaec-text-muted">{mode === '2d' ? 'Platen:' : 'Balken:'}</span>
+                    <span className="ml-1 font-semibold text-oaec-accent">{results.summary.totalSheets}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Stukken:</span>
-                    <span className="ml-1 font-semibold text-violet">{results.summary.totalParts}</span>
+                    <span className="text-oaec-text-muted">Stukken:</span>
+                    <span className="ml-1 font-semibold text-oaec-accent">{results.summary.totalParts}</span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Benutting:</span>
+                    <span className="text-oaec-text-muted">Benutting:</span>
                     <span className={`ml-1 font-semibold ${
-                      results.summary.avgEfficiency >= 80 ? 'text-verdigris' : 'text-friendly-yellow'
+                      results.summary.avgEfficiency >= 80 ? 'text-oaec-success' : 'text-oaec-warning'
                     }`}>
                       {results.summary.avgEfficiency.toFixed(1)}%
                     </span>
                   </div>
                   {results.summary.unplacedParts > 0 && (
                     <div>
-                      <span className="text-gray-500">Niet geplaatst:</span>
-                      <span className="ml-1 font-semibold text-flaming-peach">
+                      <span className="text-oaec-text-muted">Niet geplaatst:</span>
+                      <span className="ml-1 font-semibold text-oaec-danger">
                         {results.summary.unplacedParts}
                       </span>
                     </div>
@@ -538,7 +538,8 @@ function App() {
                       navigator.clipboard.writeText(results.log)
                       alert('Log gekopieerd naar klembord!')
                     }}
-                    className="mt-2 w-full py-1.5 text-xs font-medium text-gray-600 bg-gray-200 rounded hover:bg-gray-300 transition-colors flex items-center justify-center gap-1"
+                    className="mt-2 w-full py-1.5 text-xs font-medium text-oaec-text-secondary bg-oaec-bg-lighter rounded hover:bg-oaec-accent/10 transition-colors flex items-center justify-center gap-1"
+                    style={{ border: '1px solid rgba(217, 119, 6, 0.15)' }}
                   >
                     <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -555,8 +556,8 @@ function App() {
               disabled={isCalculating || stock.length === 0 || parts.length === 0}
               className={`w-full py-3 font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 ${
                 isCalculating || stock.length === 0 || parts.length === 0
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-verdigris text-white hover:bg-verdigris-light'
+                  ? 'bg-oaec-bg text-oaec-text-muted cursor-not-allowed'
+                  : 'bg-oaec-accent text-oaec-bg hover:bg-oaec-accent-hover'
               }`}
             >
               {isCalculating ? (

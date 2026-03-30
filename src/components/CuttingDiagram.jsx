@@ -90,7 +90,7 @@ function buildColorMap(sheets) {
 
 // Get color for a part based on its base ID
 function getPartColor(part, colorMap, isEdit = false) {
-  if (!colorMap) return { bg: '#E5E7EB', border: '#6B7280', text: '#374151' }
+  if (!colorMap) return { bg: '#44444C', border: 'rgba(217,119,6,0.3)', text: '#FAFAF9' }
   const baseId = getBasePartId(part.name || part.id)
   return colorMap[baseId] || partColors[0]
 }
@@ -531,13 +531,13 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
   // Empty state
   if (!results || results.sheets.length === 0) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="text-center text-gray-400">
-          <svg className="w-20 h-20 mx-auto mb-4 stroke-gray-300" viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
+      <div className="flex-1 flex items-center justify-center bg-oaec-bg">
+        <div className="text-center text-oaec-text-muted">
+          <svg className="w-20 h-20 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="rgba(217,119,6,0.3)" strokeWidth="1.5">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
             <path d="M3 9h18M9 21V9"/>
           </svg>
-          <p className="text-lg mb-1">Geen resultaten</p>
+          <p className="text-lg mb-1 text-oaec-text-secondary">Geen resultaten</p>
           <p className="text-sm">Voeg voorraad en onderdelen toe, en klik op "Bereken zaagplan"</p>
         </div>
       </div>
@@ -560,16 +560,16 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
   const scale = sheet ? calcScale(sheet) * zoomLevel : 1
 
   return (
-    <div className="flex-1 overflow-hidden flex flex-col bg-gray-50">
+    <div className="flex-1 overflow-hidden flex flex-col bg-oaec-bg">
       {/* Toolbar */}
-      <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
+      <div className="flex items-center justify-between p-3 bg-oaec-bg-lighter" style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
         <div className="flex items-center gap-2">
           {/* View mode toggle */}
-          <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+          <div className="flex rounded-lg overflow-hidden" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
             <button
               onClick={() => { if (viewMode === 'edit') cancelEdit(); else setViewMode('tabs'); }}
               className={`px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1 ${
-                viewMode === 'tabs' ? 'bg-violet text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
+                viewMode === 'tabs' ? 'bg-oaec-accent text-oaec-bg' : 'bg-oaec-bg text-oaec-text-secondary hover:bg-oaec-accent/10'
               }`}
               title="Tabs weergave"
             >
@@ -580,7 +580,7 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
             <button
               onClick={() => { if (viewMode === 'edit') cancelEdit(); else setViewMode('multi'); }}
               className={`px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1 ${
-                viewMode === 'multi' ? 'bg-violet text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
+                viewMode === 'multi' ? 'bg-oaec-accent text-oaec-bg' : 'bg-oaec-bg text-oaec-text-secondary hover:bg-oaec-accent/10'
               }`}
               title="Alle platen naast elkaar"
             >
@@ -593,7 +593,7 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
             <button
               onClick={() => { if (viewMode !== 'edit') initEditMode(); }}
               className={`px-3 py-1.5 text-xs font-medium transition-colors flex items-center gap-1 ${
-                viewMode === 'edit' ? 'bg-violet text-white' : 'bg-white text-gray-600 hover:bg-gray-50'
+                viewMode === 'edit' ? 'bg-oaec-accent text-oaec-bg' : 'bg-oaec-bg text-oaec-text-secondary hover:bg-oaec-accent/10'
               }`}
               title="Handmatig aanpassen"
             >
@@ -625,7 +625,7 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
             <button
               onClick={() => setShowGrid(!showGrid)}
               className={`ml-2 px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1 ${
-                showGrid ? 'bg-verdigris/20 text-verdigris' : 'bg-gray-100 text-gray-500'
+                showGrid ? 'bg-oaec-accent/20 text-oaec-accent' : 'bg-oaec-bg text-oaec-text-muted'
               }`}
               title="Toon grid (50mm)"
             >
@@ -640,12 +640,12 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
 
           {/* Edit mode actions */}
           {viewMode === 'edit' && (
-            <div className="flex items-center gap-2 ml-4 pl-4 border-l border-gray-200">
+            <div className="flex items-center gap-2 ml-4 pl-4" style={{ borderLeft: '1px solid rgba(217, 119, 6, 0.2)' }}>
               <button
                 onClick={handleUndo}
                 disabled={history.length === 0}
                 className={`px-3 py-1.5 text-xs font-medium rounded transition-colors flex items-center gap-1 ${
-                  history.length === 0 ? 'bg-gray-100 text-gray-400' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  history.length === 0 ? 'bg-oaec-bg text-oaec-text-muted' : 'bg-oaec-bg-lighter text-oaec-text hover:bg-oaec-accent/10'
                 }`}
               >
                 <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -653,26 +653,26 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                 </svg>
                 Undo
               </button>
-              <button onClick={cancelEdit} className="px-3 py-1.5 text-xs font-medium bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
+              <button onClick={cancelEdit} className="px-3 py-1.5 text-xs font-medium bg-oaec-bg text-oaec-text-secondary rounded hover:bg-oaec-accent/10 transition-colors">
                 Annuleren
               </button>
-              <button onClick={saveEdit} className="px-3 py-1.5 text-xs font-medium bg-verdigris text-white rounded hover:bg-verdigris-light transition-colors">
+              <button onClick={saveEdit} className="px-3 py-1.5 text-xs font-medium bg-oaec-accent text-oaec-bg rounded hover:bg-oaec-accent-hover transition-colors">
                 Opslaan
               </button>
             </div>
           )}
         </div>
 
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-oaec-text-muted">
           {sheets?.length || 0} {mode === '2d' ? 'platen' : 'balken'} • {results.summary.totalParts} stukken • {results.summary.avgEfficiency.toFixed(1)}%
           {' • '}
-          <span className="text-warm-magenta font-medium">
+          <span className="text-oaec-danger font-medium">
             {formatWaste(calculateTotalWaste(sheets, mode === '2d'), mode === '2d')} rest
           </span>
           {/* Niet-geplaatste onderdelen indicator */}
           {results.unplacedDetails && results.unplacedDetails.length > 0 && (
-            <span className="ml-2 text-warm-magenta font-bold">
-              • ⚠️ {results.unplacedDetails.length} niet geplaatst
+            <span className="ml-2 text-oaec-danger font-bold">
+              • {results.unplacedDetails.length} niet geplaatst
             </span>
           )}
         </div>
@@ -685,21 +685,21 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
         {viewMode === 'edit' && (
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2">
-              <svg className="w-4 h-4 text-friendly-yellow" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-4 h-4 text-oaec-warning" viewBox="0 0 24 24" fill="currentColor">
                 <rect x="3" y="3" width="18" height="18" rx="2"/>
               </svg>
-              <span className="text-sm font-semibold text-gray-700">Parkeerplaats</span>
-              <span className="text-xs text-gray-400">({parkedParts.length})</span>
+              <span className="text-sm font-semibold text-oaec-text">Parkeerplaats</span>
+              <span className="text-xs text-oaec-text-muted">({parkedParts.length})</span>
             </div>
             <div
               onMouseEnter={() => dragging && setDropTarget({ type: 'parking', index: 0 })}
               onMouseLeave={() => setDropTarget(null)}
               className={`min-h-16 border-2 border-dashed rounded-lg p-3 flex flex-wrap gap-2 transition-colors ${
-                dropTarget?.type === 'parking' ? 'bg-verdigris/20 border-verdigris' : 'bg-friendly-yellow/10 border-friendly-yellow/50'
+                dropTarget?.type === 'parking' ? 'bg-oaec-accent/20 border-oaec-accent' : 'bg-oaec-warning/10 border-oaec-warning/50'
               }`}
             >
               {parkedParts.length === 0 && !dragging ? (
-                <span className="text-sm text-gray-400 italic">Sleep onderdelen hierheen om ze tijdelijk te parkeren...</span>
+                <span className="text-sm text-oaec-text-muted italic">Sleep onderdelen hierheen om ze tijdelijk te parkeren...</span>
               ) : parkedParts.map(part => {
                 const colors = colorMap ? getPartColor(part, colorMap) : partColors[(part.number - 1) % partColors.length]
                 const isDragging = dragging?.part.number === part.number
@@ -709,12 +709,12 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                     onMouseDown={(e) => handleMouseDown(e, part, 'parking', 0)}
                     onClick={() => !dragging && setSelectedPart(part)}
                     className={`rounded-lg p-2 cursor-grab active:cursor-grabbing select-none border transition-all ${
-                      selectedPart?.number === part.number ? 'ring-2 ring-violet' : ''
+                      selectedPart?.number === part.number ? 'ring-2 ring-oaec-accent' : ''
                     } ${isDragging ? 'opacity-30' : ''}`}
                     style={{ backgroundColor: colors.bg, borderColor: colors.border }}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-5 h-5 bg-violet text-white rounded-full flex items-center justify-center text-xs font-bold">
+                      <span className="w-5 h-5 bg-oaec-accent text-oaec-bg rounded-full flex items-center justify-center text-xs font-bold">
                         {part.number}
                       </span>
                       <div className="text-xs">
@@ -733,20 +733,20 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
         {viewMode === 'edit' && results.unplacedDetails && results.unplacedDetails.length > 0 && (
           <div className="mb-4">
             <div className="flex items-center gap-2 mb-2">
-              <svg className="w-4 h-4 text-warm-magenta" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-4 h-4 text-oaec-danger" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
               </svg>
-              <span className="text-sm font-semibold text-gray-700">Niet-geplaatste onderdelen</span>
-              <span className="text-xs text-warm-magenta font-medium">({results.unplacedDetails.length})</span>
+              <span className="text-sm font-semibold text-oaec-text">Niet-geplaatste onderdelen</span>
+              <span className="text-xs text-oaec-danger font-medium">({results.unplacedDetails.length})</span>
             </div>
-            <div className="border-2 border-dashed border-warm-magenta/50 bg-warm-magenta/5 rounded-lg p-3 flex flex-wrap gap-2">
+            <div className="border-2 border-dashed border-oaec-danger/50 bg-oaec-danger/5 rounded-lg p-3 flex flex-wrap gap-2">
               {results.unplacedDetails.map((part, idx) => (
                 <div
                   key={idx}
-                  className="bg-white border border-warm-magenta/30 rounded-lg p-2 text-xs"
+                  className="bg-oaec-bg-lighter border border-oaec-danger/30 rounded-lg p-2 text-xs"
                 >
-                  <div className="font-medium text-gray-700">{part.name || part.id || part.label}</div>
-                  <div className="text-warm-magenta font-bold">
+                  <div className="font-medium text-oaec-text">{part.name || part.id || part.label}</div>
+                  <div className="text-oaec-danger font-bold">
                     {mode === '2d' 
                       ? `${part.length}×${part.width}mm` 
                       : `${part.length}mm`
@@ -772,8 +772,8 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                     onClick={() => setSelectedSheet(index)}
                     className={`px-4 py-2 text-sm font-medium rounded transition-colors ${
                       selectedSheet === index
-                        ? s.isVirtual ? 'bg-emerald-600 text-white' : 'bg-violet text-white'
-                        : s.isVirtual ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-white text-gray-600 border border-gray-200 hover:border-verdigris'
+                        ? s.isVirtual ? 'bg-oaec-success text-oaec-bg' : 'bg-oaec-accent text-oaec-bg'
+                        : s.isVirtual ? 'bg-oaec-success/10 text-oaec-success' : 'bg-oaec-bg text-oaec-text-secondary hover:bg-oaec-accent/10'
                     }`}
                   >
                     {s.isVirtual ? '♻️' : ''} Plaat {index + 1}
@@ -784,9 +784,9 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
             )}
             
             <div className="mb-4 flex items-center gap-4">
-              <h3 className="text-sm font-semibold text-violet">{sheet?.name}</h3>
-              <span className="text-xs text-gray-500">{sheet?.length} × {sheet?.width} mm</span>
-              <span className={`text-xs px-2 py-1 rounded ${sheet?.efficiency >= 80 ? 'bg-verdigris/10 text-verdigris' : 'bg-friendly-yellow/20 text-yellow-700'}`}>
+              <h3 className="text-sm font-semibold text-oaec-accent">{sheet?.name}</h3>
+              <span className="text-xs text-oaec-text-muted">{sheet?.length} × {sheet?.width} mm</span>
+              <span className={`text-xs px-2 py-1 rounded ${sheet?.efficiency >= 80 ? 'bg-oaec-success/10 text-oaec-success' : 'bg-oaec-warning/20 text-oaec-warning'}`}>
                 {sheet?.efficiency?.toFixed(1)}%
               </span>
             </div>
@@ -804,10 +804,10 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
               return (
                 <div key={index} className="w-[320px]">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-violet">
+                    <span className="text-sm font-semibold text-oaec-accent">
                       {s.isVirtual ? '♻️' : ''} Plaat {index + 1}
                     </span>
-                    <span className={`text-xs px-2 py-1 rounded ${eff >= 70 ? 'bg-verdigris/10 text-verdigris' : 'bg-friendly-yellow/20 text-yellow-700'}`}>
+                    <span className={`text-xs px-2 py-1 rounded ${eff >= 70 ? 'bg-oaec-success/10 text-oaec-success' : 'bg-oaec-warning/20 text-oaec-warning'}`}>
                       {eff.toFixed(0)}%
                     </span>
                   </div>
@@ -827,11 +827,12 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                         setDropCoords(null)
                       }
                     }}
-                    className={`bg-white border-2 rounded-lg transition-all ${
+                    className={`bg-oaec-bg-lighter border-2 rounded-lg transition-all ${
                       viewMode === 'multi' ? 'cursor-pointer hover:shadow-lg' : ''
-                    } ${isDropTarget ? 'border-verdigris bg-verdigris/5' : 'border-gray-200'} ${
-                      viewMode === 'multi' && selectedSheet === index ? 'ring-2 ring-violet ring-offset-2' : ''
+                    } ${isDropTarget ? 'border-oaec-accent bg-oaec-accent/5' : ''} ${
+                      viewMode === 'multi' && selectedSheet === index ? 'ring-2 ring-oaec-accent ring-offset-2 ring-offset-oaec-bg' : ''
                     }`}
+                    style={!isDropTarget ? { borderColor: 'rgba(217, 119, 6, 0.2)' } : {}}
                   >
                     <SheetSVG 
                       ref={el => sheetRefs.current[index] = el}
@@ -864,7 +865,7 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                       })() : null}
                     />
                   </div>
-                  <div className="mt-1 text-xs text-gray-400 text-center">{s.length}×{s.width}</div>
+                  <div className="mt-1 text-xs text-oaec-text-muted text-center">{s.length}×{s.width}</div>
                 </div>
               )
             })}
@@ -873,43 +874,43 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
 
         {/* Selected part actions */}
         {viewMode === 'edit' && selectedPart && !dragging && (
-          <div className="mt-4 p-3 bg-white rounded-lg border border-gray-200 inline-flex items-center gap-4">
+          <div className="mt-4 p-3 bg-oaec-bg-lighter rounded-lg inline-flex items-center gap-4" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
             <div className="text-sm">
-              <span className="text-gray-500">Geselecteerd:</span>
-              <span className="ml-2 font-medium">#{selectedPart.number} {selectedPart.name}</span>
-              <span className="ml-2 text-gray-400">{selectedPart.length}×{selectedPart.width}</span>
-              {selectedPart.rotated && <span className="ml-2 text-verdigris text-xs">↻</span>}
+              <span className="text-oaec-text-muted">Geselecteerd:</span>
+              <span className="ml-2 font-medium text-oaec-text">#{selectedPart.number} {selectedPart.name}</span>
+              <span className="ml-2 text-oaec-text-muted">{selectedPart.length}×{selectedPart.width}</span>
+              {selectedPart.rotated && <span className="ml-2 text-oaec-accent text-xs">↻</span>}
             </div>
-            <button onClick={handleRotateSelected} className="px-3 py-1.5 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+            <button onClick={handleRotateSelected} className="px-3 py-1.5 text-xs bg-oaec-bg hover:bg-oaec-accent/10 text-oaec-text-secondary rounded transition-colors">
               90° roteren
             </button>
-            <button onClick={handleParkSelected} className="px-3 py-1.5 text-xs bg-friendly-yellow/20 hover:bg-friendly-yellow/30 text-yellow-700 rounded transition-colors">
+            <button onClick={handleParkSelected} className="px-3 py-1.5 text-xs bg-oaec-warning/20 hover:bg-oaec-warning/30 text-oaec-warning rounded transition-colors">
               Parkeren
             </button>
           </div>
         )}
 
         {/* Legend */}
-        <div className={`mt-4 text-xs text-gray-500 ${viewMode === 'edit' ? 'flex justify-end' : 'flex flex-wrap gap-6'}`}>
+        <div className={`mt-4 text-xs text-oaec-text-muted ${viewMode === 'edit' ? 'flex justify-end' : 'flex flex-wrap gap-6'}`}>
           {viewMode === 'edit' ? (
             <div className="flex flex-col gap-1 items-end">
               <div className="flex items-center gap-2">
                 <span>Gezaagd stuk</span>
-                <div className="w-4 h-4 bg-gray-200 border border-gray-500 rounded"></div>
+                <div className="w-4 h-4 bg-oaec-bg-lighter border border-oaec-text-muted rounded"></div>
               </div>
               <div className="flex items-center gap-2">
                 <span>Geparkeerd</span>
-                <div className="w-4 h-4 bg-friendly-yellow/30 border border-friendly-yellow rounded"></div>
+                <div className="w-4 h-4 bg-oaec-warning/30 border border-oaec-warning rounded"></div>
               </div>
               <div className="flex items-center gap-2">
                 <span>Vrije plek</span>
-                <div className="w-4 h-4 border border-dashed border-verdigris bg-verdigris/10 rounded"></div>
+                <div className="w-4 h-4 border border-dashed border-oaec-accent bg-oaec-accent/10 rounded"></div>
               </div>
               <div className="flex items-center gap-2">
                 <span>Collision</span>
                 <div className="w-4 h-4 border border-dashed border-red-500 bg-red-500/10 rounded"></div>
               </div>
-              <span className="text-gray-400 mt-1">Grid: 50mm • Snap: 15mm • Kerf: {kerf}mm</span>
+              <span className="text-oaec-text-muted mt-1">Grid: 50mm • Snap: 15mm • Kerf: {kerf}mm</span>
             </div>
           ) : (
             <>
@@ -922,11 +923,11 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
                         className="w-4 h-4 rounded border" 
                         style={{ backgroundColor: colors.bg, borderColor: colors.border }}
                       />
-                      <span className="text-xs text-gray-600">{baseId}</span>
+                      <span className="text-xs text-oaec-text-secondary">{baseId}</span>
                     </div>
                   ))}
                   {Object.keys(colorMap).length > 8 && (
-                    <span className="text-xs text-gray-400">+{Object.keys(colorMap).length - 8} meer</span>
+                    <span className="text-xs text-oaec-text-muted">+{Object.keys(colorMap).length - 8} meer</span>
                   )}
                 </div>
               )}
@@ -949,7 +950,7 @@ export default function CuttingDiagram({ mode, results, setResults, selectedShee
             }}
           >
             <div className="flex items-center gap-2">
-              <span className="w-5 h-5 bg-violet text-white rounded-full flex items-center justify-center text-xs font-bold">
+              <span className="w-5 h-5 bg-oaec-accent text-oaec-bg rounded-full flex items-center justify-center text-xs font-bold">
                 {dragging.part.number}
               </span>
               <div className="text-xs">
@@ -991,8 +992,8 @@ const SheetSVG = forwardRef(function SheetSVG({
         y={padding}
         width={sheet.length * scale}
         height={mode === '2d' ? sheet.width * scale : 40}
-        fill={sheet.isVirtual ? "#D1FAE5" : "#F9FAFB"}
-        stroke={sheet.isVirtual ? "#10B981" : "#D1D5DB"}
+        fill={sheet.isVirtual ? "#1a3a2a" : "#2E2E36"}
+        stroke={sheet.isVirtual ? "#16A34A" : "rgba(217,119,6,0.3)"}
         strokeWidth="2"
       />
 
@@ -1005,7 +1006,7 @@ const SheetSVG = forwardRef(function SheetSVG({
             y1={padding}
             x2={padding + line.pos * scale}
             y2={padding + sheet.width * scale}
-            stroke="#E5E7EB"
+            stroke="rgba(217,119,6,0.15)"
             strokeWidth="1"
             strokeDasharray={line.pos % 100 === 0 ? "none" : "2 2"}
           />
@@ -1016,7 +1017,7 @@ const SheetSVG = forwardRef(function SheetSVG({
             y1={padding + line.pos * scale}
             x2={padding + sheet.length * scale}
             y2={padding + line.pos * scale}
-            stroke="#E5E7EB"
+            stroke="rgba(217,119,6,0.15)"
             strokeWidth="1"
             strokeDasharray={line.pos % 100 === 0 ? "none" : "2 2"}
           />
@@ -1027,17 +1028,17 @@ const SheetSVG = forwardRef(function SheetSVG({
       {!compact && (
         <>
           <g>
-            <line x1={padding} y1={padding - 20} x2={padding + sheet.length * scale} y2={padding - 20} stroke="#9CA3AF" strokeWidth="1"/>
-            <path d={`M ${padding} ${padding - 20} l 5 -4 l 0 8 z`} fill="#9CA3AF"/>
-            <path d={`M ${padding + sheet.length * scale} ${padding - 20} l -5 -4 l 0 8 z`} fill="#9CA3AF"/>
-            <text x={padding + (sheet.length * scale) / 2} y={padding - 28} textAnchor="middle" fill="#6B7280" fontSize="11">{sheet.length} mm</text>
+            <line x1={padding} y1={padding - 20} x2={padding + sheet.length * scale} y2={padding - 20} stroke="rgba(250,250,249,0.4)" strokeWidth="1"/>
+            <path d={`M ${padding} ${padding - 20} l 5 -4 l 0 8 z`} fill="rgba(250,250,249,0.4)"/>
+            <path d={`M ${padding + sheet.length * scale} ${padding - 20} l -5 -4 l 0 8 z`} fill="rgba(250,250,249,0.4)"/>
+            <text x={padding + (sheet.length * scale) / 2} y={padding - 28} textAnchor="middle" fill="rgba(250,250,249,0.5)" fontSize="11">{sheet.length} mm</text>
           </g>
           {mode === '2d' && (
             <g>
-              <line x1={padding - 20} y1={padding} x2={padding - 20} y2={padding + sheet.width * scale} stroke="#9CA3AF" strokeWidth="1"/>
-              <path d={`M ${padding - 20} ${padding} l -4 5 l 8 0 z`} fill="#9CA3AF"/>
-              <path d={`M ${padding - 20} ${padding + sheet.width * scale} l -4 -5 l 8 0 z`} fill="#9CA3AF"/>
-              <text x={padding - 28} y={padding + (sheet.width * scale) / 2} textAnchor="middle" fill="#6B7280" fontSize="11" transform={`rotate(-90, ${padding - 28}, ${padding + (sheet.width * scale) / 2})`}>{sheet.width} mm</text>
+              <line x1={padding - 20} y1={padding} x2={padding - 20} y2={padding + sheet.width * scale} stroke="rgba(250,250,249,0.4)" strokeWidth="1"/>
+              <path d={`M ${padding - 20} ${padding} l -4 5 l 8 0 z`} fill="rgba(250,250,249,0.4)"/>
+              <path d={`M ${padding - 20} ${padding + sheet.width * scale} l -4 -5 l 8 0 z`} fill="rgba(250,250,249,0.4)"/>
+              <text x={padding - 28} y={padding + (sheet.width * scale) / 2} textAnchor="middle" fill="rgba(250,250,249,0.5)" fontSize="11" transform={`rotate(-90, ${padding - 28}, ${padding + (sheet.width * scale) / 2})`}>{sheet.width} mm</text>
             </g>
           )}
         </>
@@ -1051,7 +1052,7 @@ const SheetSVG = forwardRef(function SheetSVG({
           width={dropPreview.length * scale}
           height={dropPreview.width * scale}
           fill={dropPreview.collision ? "rgba(239, 68, 68, 0.15)" : "rgba(68, 182, 168, 0.15)"}
-          stroke={dropPreview.collision ? "#EF4444" : "#44B6A8"}
+          stroke={dropPreview.collision ? "#EF4444" : "#D97706"}
           strokeWidth="2"
           strokeDasharray="6 3"
           rx="3"
@@ -1061,7 +1062,7 @@ const SheetSVG = forwardRef(function SheetSVG({
       {/* Parts */}
       {sheet.parts.map((part, idx) => {
         // Gebruik colorMap voor consistente kleuren per onderdeelgroep (split parts zelfde kleur)
-        const colors = colorMap ? getPartColor(part, colorMap) : { bg: '#E5E7EB', border: '#6B7280', text: '#374151' }
+        const colors = colorMap ? getPartColor(part, colorMap) : { bg: '#44444C', border: 'rgba(217,119,6,0.3)', text: '#FAFAF9' }
         const x = padding + part.x * scale
         const y = padding + (mode === '2d' ? part.y * scale : 0)
         const w = part.length * scale
@@ -1085,7 +1086,7 @@ const SheetSVG = forwardRef(function SheetSVG({
                 <path 
                   d={pointsToPath(boundary, scale, padding + part.x * scale, padding + part.y * scale)} 
                   fill={colors.bg} 
-                  stroke={isSelected ? '#350E35' : colors.border} 
+                  stroke={isSelected ? '#D97706' : colors.border} 
                   strokeWidth={isSelected ? 2.5 : 1.5}
                 />
                 {holes.map((hole, hIdx) => {
@@ -1098,10 +1099,10 @@ const SheetSVG = forwardRef(function SheetSVG({
                 })}
               </>
             ) : (
-              <rect x={x} y={y} width={w} height={h} fill={colors.bg} stroke={isSelected ? '#350E35' : colors.border} strokeWidth={isSelected ? 2.5 : 1.5} rx="2"/>
+              <rect x={x} y={y} width={w} height={h} fill={colors.bg} stroke={isSelected ? '#D97706' : colors.border} strokeWidth={isSelected ? 2.5 : 1.5} rx="2"/>
             )}
 
-            <circle cx={x + (compact ? 8 : 12)} cy={y + (compact ? 8 : 12)} r={compact ? 6 : 10} fill="#350E35"/>
+            <circle cx={x + (compact ? 8 : 12)} cy={y + (compact ? 8 : 12)} r={compact ? 6 : 10} fill="#D97706"/>
             <text x={x + (compact ? 8 : 12)} y={y + (compact ? 11 : 16)} textAnchor="middle" fill="white" fontSize={compact ? 7 : 10} fontWeight="600">{part.number}</text>
 
             {!compact && !isComplex && w > 60 && h > 30 && (
@@ -1109,15 +1110,15 @@ const SheetSVG = forwardRef(function SheetSVG({
             )}
 
             {!compact && !isComplex && w > 80 && h > 50 && (
-              <text x={x + w / 2} y={y + h / 2 + 18} textAnchor="middle" fill="#6B7280" fontSize="9">
+              <text x={x + w / 2} y={y + h / 2 + 18} textAnchor="middle" fill="rgba(250,250,249,0.5)" fontSize="9">
                 {part.name.length > 14 ? part.name.slice(0, 14) + '...' : part.name}
               </text>
             )}
 
             {part.grain && !compact && (
               <g>
-                <line x1={x + 4} y1={y + h - 8} x2={x + 20} y2={y + h - 8} stroke="#44B6A8" strokeWidth="2"/>
-                <line x1={x + 4} y1={y + h - 12} x2={x + 20} y2={y + h - 12} stroke="#44B6A8" strokeWidth="2"/>
+                <line x1={x + 4} y1={y + h - 8} x2={x + 20} y2={y + h - 8} stroke="#D97706" strokeWidth="2"/>
+                <line x1={x + 4} y1={y + h - 12} x2={x + 20} y2={y + h - 12} stroke="#D97706" strokeWidth="2"/>
               </g>
             )}
           </g>

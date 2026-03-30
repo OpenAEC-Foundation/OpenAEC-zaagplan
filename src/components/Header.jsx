@@ -1,21 +1,23 @@
 /**
  * Header Component
  * Bevat logo, titel en actie knoppen
+ * OpenAEC Dark Theme met amber accent
  */
 export default function Header({ onSave, onOpen, onExport, onHelp }) {
   return (
-    <header className="bg-violet text-white px-8 py-4 flex justify-between items-center">
+    <header className="bg-oaec-bg text-oaec-text px-8 py-3 flex justify-between items-center"
+      style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
       <div className="flex items-center gap-3">
         {/* Logo */}
-        <div className="w-10 h-10 bg-verdigris rounded flex items-center justify-center">
-          <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <div className="w-10 h-10 bg-oaec-accent rounded-lg flex items-center justify-center">
+          <svg className="w-6 h-6 text-oaec-bg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
             <path d="M3 9h18M9 21V9"/>
           </svg>
         </div>
         <div>
-          <h1 className="text-xl font-semibold tracking-tight">CutList Optimizer</h1>
-          <p className="text-verdigris text-xs font-medium">OpenAEC</p>
+          <h1 className="text-xl font-semibold tracking-tight text-oaec-text">CutList Optimizer</h1>
+          <p className="text-oaec-accent text-xs font-medium">OpenAEC</p>
         </div>
       </div>
 
@@ -23,7 +25,7 @@ export default function Header({ onSave, onOpen, onExport, onHelp }) {
         {/* Open */}
         <button
           onClick={onOpen}
-          className="px-4 py-2 text-sm bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
+          className="px-4 py-2 text-sm text-oaec-text-secondary bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
           title="Open configuratie (CSV)"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -35,7 +37,7 @@ export default function Header({ onSave, onOpen, onExport, onHelp }) {
         {/* Save */}
         <button
           onClick={onSave}
-          className="px-4 py-2 text-sm bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
+          className="px-4 py-2 text-sm text-oaec-text-secondary bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
           title="Sla configuratie op (CSV)"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -49,7 +51,7 @@ export default function Header({ onSave, onOpen, onExport, onHelp }) {
         {/* Export PDF */}
         <button
           onClick={onExport}
-          className="px-4 py-2 text-sm bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
+          className="px-4 py-2 text-sm text-oaec-text-secondary bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
           title="Exporteer zaagplan als PDF"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -64,7 +66,7 @@ export default function Header({ onSave, onOpen, onExport, onHelp }) {
         {/* Help */}
         <button
           onClick={onHelp}
-          className="px-3 py-2 text-sm bg-verdigris border border-verdigris rounded hover:bg-verdigris-light transition-colors flex items-center gap-2"
+          className="px-3 py-2 text-sm bg-oaec-accent text-oaec-bg font-medium rounded hover:bg-oaec-accent-hover transition-colors flex items-center gap-2"
           title="Help & documentatie"
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

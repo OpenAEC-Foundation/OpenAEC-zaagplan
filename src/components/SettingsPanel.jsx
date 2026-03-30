@@ -99,15 +99,15 @@ export default function SettingsPanel({
   const currentIterations = levelToIterations(optimizationLevel)
 
   return (
-    <div className="border-b border-gray-200">
+    <div style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
       {/* Mode Tabs */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex" style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
         <button
           onClick={() => setMode('2d')}
           className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${
             mode === '2d'
-              ? 'border-verdigris text-violet bg-white'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-oaec-accent text-oaec-text bg-oaec-bg-lighter'
+              : 'border-transparent text-oaec-text-muted hover:text-oaec-text'
           }`}
         >
           <span className="flex items-center justify-center gap-2">
@@ -122,8 +122,8 @@ export default function SettingsPanel({
           onClick={() => setMode('1d')}
           className={`flex-1 py-3 text-sm font-medium border-b-2 transition-colors ${
             mode === '1d'
-              ? 'border-verdigris text-violet bg-white'
-              : 'border-transparent text-gray-500 hover:text-gray-700'
+              ? 'border-oaec-accent text-oaec-text bg-oaec-bg-lighter'
+              : 'border-transparent text-oaec-text-muted hover:text-oaec-text'
           }`}
         >
           <span className="flex items-center justify-center gap-2">
@@ -138,11 +138,11 @@ export default function SettingsPanel({
       </div>
 
       {/* Settings */}
-      <div className="p-4 bg-gray-50 space-y-4">
+      <div className="p-4 bg-oaec-bg space-y-4">
         {/* Zaagblad & Frees dikte */}
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
               Zaagblad
             </label>
             <div className="flex items-center gap-1">
@@ -162,7 +162,7 @@ export default function SettingsPanel({
 
           {mode === '2d' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
                 Frees
               </label>
               <div className="flex items-center gap-1">
@@ -183,7 +183,7 @@ export default function SettingsPanel({
 
           {mode === '1d' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
                 Las/koppeling
               </label>
               <div className="flex items-center gap-1">
@@ -205,7 +205,7 @@ export default function SettingsPanel({
 
         {/* Algoritme keuze (voor beide modes) */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
             Algoritme
           </label>
           <select
@@ -233,8 +233,8 @@ export default function SettingsPanel({
         {/* Optimalisatie niveau (voor hybrid algoritme) */}
         {algorithm === 'hybrid' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Optimalisatie: <span className="text-verdigris font-semibold">{optimizationLevel}</span>
+            <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
+              Optimalisatie: <span className="text-oaec-accent font-semibold">{optimizationLevel}</span>
               <span className="text-gray-400 font-normal ml-1">({levelLabels[optimizationLevel]})</span>
             </label>
             <input
@@ -244,7 +244,7 @@ export default function SettingsPanel({
               min="1"
               max="10"
               step="1"
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-verdigris"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-oaec-accent"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-1">
               <span>1 (snel)</span>
@@ -256,8 +256,8 @@ export default function SettingsPanel({
 
         {/* Info voor niet-iteratieve algoritmes */}
         {algorithm !== 'hybrid' && (
-          <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-700">
-            💡 Dit algoritme is deterministisch - iteraties hebben geen effect.
+          <div className="p-2 rounded text-xs text-oaec-warning" style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.25)' }}>
+            Dit algoritme is deterministisch - iteraties hebben geen effect.
           </div>
         )}
 
@@ -265,7 +265,7 @@ export default function SettingsPanel({
         {mode === '2d' && (
           <div className="flex items-center justify-between">
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-oaec-text-secondary">
                 Nerf-richting
               </label>
               <p className="text-xs text-gray-500">Voorkom rotatie van stukken met nerf</p>
@@ -273,8 +273,9 @@ export default function SettingsPanel({
             <button
               onClick={() => setGrainDirection(!grainDirection)}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                grainDirection ? 'bg-verdigris' : 'bg-gray-300'
+                grainDirection ? 'bg-oaec-accent' : 'bg-oaec-bg-lighter'
               }`}
+              style={{ border: grainDirection ? 'none' : '1px solid rgba(217, 119, 6, 0.25)' }}
               role="switch"
               aria-checked={grainDirection}
             >
@@ -290,8 +291,8 @@ export default function SettingsPanel({
         {/* Splitsen lange onderdelen (alleen voor 1D) */}
         {mode === '1d' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Max delen per onderdeel: <span className="text-verdigris font-semibold">{maxSplitParts}</span>
+            <label className="block text-sm font-medium text-oaec-text-secondary mb-1">
+              Max delen per onderdeel: <span className="text-oaec-accent font-semibold">{maxSplitParts}</span>
             </label>
             <input
               type="range"
@@ -300,7 +301,7 @@ export default function SettingsPanel({
               min="1"
               max="5"
               step="1"
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-verdigris"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-oaec-accent"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-1">
               <span>1 (niet splitsen)</span>

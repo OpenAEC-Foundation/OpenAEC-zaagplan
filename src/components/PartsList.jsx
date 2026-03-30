@@ -90,8 +90,13 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
 
   const getStockColor = (stockType) => {
     const index = stockTypes.findIndex(s => s.name === stockType)
-    const colors = ['bg-violet/10 text-violet', 'bg-verdigris/10 text-verdigris', 'bg-friendly-yellow/20 text-yellow-700', 'bg-flaming-peach/10 text-flaming-peach']
-    return colors[index % colors.length] || 'bg-gray-100 text-gray-600'
+    const colors = [
+      'bg-oaec-accent/10 text-oaec-accent',
+      'bg-oaec-info/10 text-oaec-info',
+      'bg-oaec-warning/10 text-oaec-warning',
+      'bg-oaec-success/10 text-oaec-success'
+    ]
+    return colors[index % colors.length] || 'bg-oaec-bg-lighter text-oaec-text-secondary'
   }
 
   const totalParts = parts.reduce((sum, p) => sum + p.quantity, 0)
@@ -115,7 +120,7 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-violet flex items-center gap-2">
+        <h3 className="text-sm font-semibold text-oaec-accent flex items-center gap-2">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <rect x="3" y="3" width="18" height="18" rx="2"/>
             <line x1="9" y1="3" x2="9" y2="21"/>
@@ -125,7 +130,7 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
           </svg>
           Onderdelen
           {totalParts > 0 && (
-            <span className="ml-1 px-2 py-0.5 text-xs bg-verdigris/10 text-verdigris rounded-full">
+            <span className="ml-1 px-2 py-0.5 text-xs rounded-full" style={{ background: 'rgba(217, 119, 6, 0.1)', color: '#D97706' }}>
               {totalParts} stuks
             </span>
           )}
@@ -134,9 +139,9 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
           onClick={() => setIsAdding(true)}
           disabled={stock.length === 0}
           className={`text-xs font-medium flex items-center gap-1 ${
-            stock.length === 0 
-              ? 'text-gray-400 cursor-not-allowed' 
-              : 'text-verdigris hover:text-verdigris-light'
+            stock.length === 0
+              ? 'text-oaec-text-muted cursor-not-allowed'
+              : 'text-oaec-accent hover:text-oaec-accent-hover'
           }`}
         >
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -148,16 +153,16 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
       </div>
 
       {stock.length === 0 && (
-        <p className="text-sm text-gray-400 text-center py-4 bg-gray-50 rounded border border-dashed border-gray-200">
+        <p className="text-sm text-oaec-text-muted text-center py-4 bg-oaec-bg rounded" style={{ border: '1px dashed rgba(217, 119, 6, 0.2)' }}>
           Voeg eerst voorraad toe voordat je onderdelen kunt toevoegen.
         </p>
       )}
 
       {/* Parts table */}
       {parts.length > 0 && (
-        <div className="border border-gray-200 rounded overflow-hidden text-xs">
+        <div className="rounded overflow-hidden text-xs" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
           {/* Header */}
-          <div className={`grid ${getGridClass()} gap-1 px-2 py-1.5 bg-gray-100 font-medium text-gray-500 uppercase tracking-wide items-center`}>
+          <div className={`grid ${getGridClass()} gap-1 px-2 py-1.5 bg-oaec-bg font-medium text-oaec-text-muted uppercase tracking-wide items-center`}>
             <div>Naam</div>
             <div className="text-right">L</div>
             {mode === '2d' && <div className="text-right">B</div>}
@@ -170,12 +175,11 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
           {parts.map((part, index) => (
             <div
               key={part.id}
-              className={`grid ${getGridClass()} gap-1 px-2 py-1.5 items-center group hover:bg-verdigris/5 transition-colors ${
-                index !== parts.length - 1 ? 'border-b border-gray-100' : ''
-              }`}
+              className={`grid ${getGridClass()} gap-1 px-2 py-1.5 items-center group hover:bg-oaec-accent/5 transition-colors`}
+              style={index !== parts.length - 1 ? { borderBottom: '1px solid rgba(217, 119, 6, 0.1)' } : {}}
             >
               <div className="min-w-0">
-                <div className="text-sm font-medium text-gray-700 truncate" title={part.name}>
+                <div className="text-sm font-medium text-oaec-text truncate" title={part.name}>
                   {part.name}
                 </div>
                 <select
@@ -191,28 +195,28 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
                   ))}
                 </select>
               </div>
-              <div className="text-sm text-gray-600 text-right tabular-nums">
+              <div className="text-sm text-oaec-text-secondary text-right tabular-nums">
                 {part.length}
               </div>
               {mode === '2d' && (
-                <div className="text-sm text-gray-600 text-right tabular-nums">
+                <div className="text-sm text-oaec-text-secondary text-right tabular-nums">
                   {part.width}
                 </div>
               )}
               <div className="flex items-center justify-center">
-                <div className="inline-flex items-center border border-gray-200 rounded">
+                <div className="inline-flex items-center rounded" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
                   <button
                     onClick={() => handleQuantityChange(part.id, -1)}
-                    className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-violet hover:bg-gray-50"
+                    className="w-5 h-5 flex items-center justify-center text-oaec-text-muted hover:text-oaec-accent hover:bg-oaec-accent/10"
                   >
                     −
                   </button>
-                  <span className="w-5 h-5 flex items-center justify-center font-medium text-gray-700 border-x border-gray-200">
+                  <span className="w-5 h-5 flex items-center justify-center font-medium text-oaec-text" style={{ borderLeft: '1px solid rgba(217, 119, 6, 0.2)', borderRight: '1px solid rgba(217, 119, 6, 0.2)' }}>
                     {part.quantity}
                   </span>
                   <button
                     onClick={() => handleQuantityChange(part.id, 1)}
-                    className="w-5 h-5 flex items-center justify-center text-gray-500 hover:text-violet hover:bg-gray-50"
+                    className="w-5 h-5 flex items-center justify-center text-oaec-text-muted hover:text-oaec-accent hover:bg-oaec-accent/10"
                   >
                     +
                   </button>
@@ -224,8 +228,8 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
                     onClick={() => toggleGrain(part.id)}
                     className={`w-5 h-5 rounded flex items-center justify-center transition-colors ${
                       part.grain
-                        ? 'bg-verdigris text-white'
-                        : 'bg-gray-200 text-gray-400 hover:bg-gray-300'
+                        ? 'bg-oaec-accent text-oaec-bg'
+                        : 'bg-oaec-bg-lighter text-oaec-text-muted hover:bg-oaec-accent/20'
                     }`}
                   >
                     {part.grain && (
@@ -239,7 +243,7 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
               <div className="flex justify-end">
                 <button
                   onClick={() => handleRemove(part.id)}
-                  className="p-0.5 text-gray-400 hover:text-flaming-peach opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="p-0.5 text-oaec-text-muted hover:text-oaec-danger opacity-0 group-hover:opacity-100 transition-opacity"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="18" y1="6" x2="6" y2="18"/>
@@ -254,14 +258,14 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
 
       {/* Empty state */}
       {parts.length === 0 && stock.length > 0 && !isAdding && (
-        <p className="text-sm text-gray-400 text-center py-4 bg-gray-50 rounded border border-dashed border-gray-200">
+        <p className="text-sm text-oaec-text-muted text-center py-4 bg-oaec-bg rounded" style={{ border: '1px dashed rgba(217, 119, 6, 0.2)' }}>
           Geen onderdelen. Voeg te zagen stukken toe.
         </p>
       )}
 
       {/* Add new part form */}
       {isAdding && (
-        <div className="mt-2 p-3 bg-verdigris/5 border border-verdigris/30 rounded space-y-3">
+        <div className="mt-2 p-3 rounded space-y-3" style={{ background: 'rgba(217, 119, 6, 0.05)', border: '1px solid rgba(217, 119, 6, 0.2)' }}>
           <div className="flex gap-2">
             <input
               type="text"
@@ -317,12 +321,12 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
             </div>
           </div>
           {mode === '2d' && grainDirection && (
-            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+            <label className="flex items-center gap-2 text-sm text-oaec-text-secondary cursor-pointer">
               <input
                 type="checkbox"
                 checked={newPart.grain}
                 onChange={(e) => setNewPart({ ...newPart, grain: e.target.checked })}
-                className="w-4 h-4 text-verdigris rounded border-gray-300 focus:ring-verdigris"
+                className="w-4 h-4 rounded"
               />
               Nerf-richting behouden
             </label>
@@ -330,13 +334,13 @@ export default function PartsList({ mode, parts, setParts, grainDirection, stock
           <div className="flex gap-2">
             <button
               onClick={handleAdd}
-              className="flex-1 py-2 text-sm font-medium text-white bg-verdigris rounded hover:bg-verdigris-light transition-colors"
+              className="flex-1 py-2 text-sm font-medium text-oaec-bg bg-oaec-accent rounded hover:bg-oaec-accent-hover transition-colors"
             >
               Toevoegen
             </button>
             <button
               onClick={() => setIsAdding(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded hover:bg-gray-200 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-oaec-text-secondary bg-oaec-bg-lighter rounded hover:bg-oaec-bg transition-colors"
             >
               Annuleren
             </button>

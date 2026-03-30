@@ -1,6 +1,7 @@
 /**
  * ManualEditor Component
  * Drag & drop interface voor handmatige herverdeling van onderdelen
+ * OpenAEC Dark Theme
  */
 import { useState, useRef } from 'react'
 
@@ -47,7 +48,7 @@ const partColors = [
 
 export default function ManualEditor({ results, onSave, onClose }) {
   // Clone results voor lokale state
-  const [sheets, setSheets] = useState(() => 
+  const [sheets, setSheets] = useState(() =>
     JSON.parse(JSON.stringify(results.sheets))
   )
   const [parkedParts, setParkedParts] = useState([])
@@ -103,11 +104,11 @@ export default function ManualEditor({ results, onSave, onClose }) {
   const handleDrop = (e, targetType, targetIndex) => {
     e.preventDefault()
     setDragOverTarget(null)
-    
+
     if (!draggedPart) return
-    
+
     const { part, sourceType, sourceIndex } = draggedPart
-    
+
     // Niet droppen op dezelfde locatie
     if (sourceType === targetType && sourceIndex === targetIndex) {
       setDraggedPart(null)
@@ -138,12 +139,12 @@ export default function ManualEditor({ results, onSave, onClose }) {
         const existingParts = newSheets[targetIndex].parts
         let newX = 0
         let newY = 0
-        
+
         // Simpele plaatsing: zoek eerste vrije plek
         existingParts.forEach(p => {
           if (p.x + p.length > newX) newX = p.x + p.length + 3
         })
-        
+
         if (newX + part.length > newSheets[targetIndex].length) {
           newX = 0
           newY = Math.max(...existingParts.map(p => p.y + p.width), 0) + 3
@@ -166,15 +167,15 @@ export default function ManualEditor({ results, onSave, onClose }) {
   // Parkeer geselecteerd onderdeel
   const handleParkSelected = () => {
     if (!selectedPart) return
-    
+
     saveToHistory()
-    
+
     // Zoek en verwijder van sheet
     setSheets(prev => prev.map(sheet => ({
       ...sheet,
       parts: sheet.parts.filter(p => p.number !== selectedPart.number)
     })))
-    
+
     // Voeg toe aan parking
     setParkedParts(prev => [...prev, selectedPart])
     setSelectedPart(null)
@@ -183,9 +184,9 @@ export default function ManualEditor({ results, onSave, onClose }) {
   // Roteer geselecteerd onderdeel
   const handleRotateSelected = () => {
     if (!selectedPart) return
-    
+
     saveToHistory()
-    
+
     setSheets(prev => prev.map(sheet => ({
       ...sheet,
       parts: sheet.parts.map(p => {
@@ -223,14 +224,14 @@ export default function ManualEditor({ results, onSave, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-900/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-50 rounded-xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col">
-        
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <div className="bg-oaec-bg rounded-xl shadow-2xl w-full max-w-7xl max-h-[90vh] flex flex-col" style={{ border: '1px solid rgba(217, 119, 6, 0.2)' }}>
+
         {/* Header */}
-        <div className="bg-violet text-white px-6 py-4 rounded-t-xl flex items-center justify-between">
+        <div className="bg-oaec-bg text-oaec-text px-6 py-4 rounded-t-xl flex items-center justify-between" style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
           <div className="flex items-center gap-4">
-            <h2 className="text-lg font-bold">Handmatige herverdeling</h2>
-            <span className="text-violet-200 text-sm">Sleep onderdelen tussen platen</span>
+            <h2 className="text-lg font-bold text-oaec-text">Handmatige herverdeling</h2>
+            <span className="text-oaec-text-muted text-sm">Sleep onderdelen tussen platen</span>
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -238,8 +239,8 @@ export default function ManualEditor({ results, onSave, onClose }) {
               disabled={history.length === 0}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 ${
                 history.length === 0
-                  ? 'bg-violet-700/50 text-violet-300 cursor-not-allowed'
-                  : 'bg-violet-700 hover:bg-violet-600'
+                  ? 'bg-oaec-bg-lighter text-oaec-text-muted cursor-not-allowed'
+                  : 'bg-oaec-bg-lighter text-oaec-text hover:bg-oaec-accent/10'
               }`}
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -249,13 +250,13 @@ export default function ManualEditor({ results, onSave, onClose }) {
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-verdigris hover:bg-verdigris-light rounded-lg text-sm font-medium transition-colors"
+              className="px-4 py-2 bg-oaec-accent hover:bg-oaec-accent-hover text-oaec-bg rounded-lg text-sm font-medium transition-colors"
             >
               Opslaan
             </button>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-violet-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-oaec-accent/10 rounded-lg transition-colors text-oaec-text-secondary"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M18 6L6 18M6 6l12 12"/>
@@ -266,18 +267,18 @@ export default function ManualEditor({ results, onSave, onClose }) {
 
         {/* Content */}
         <div className="flex-1 overflow-hidden flex">
-          
+
           {/* Main area */}
           <div className="flex-1 overflow-auto p-4">
-            
+
             {/* Parkeerplaats */}
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-2">
-                <svg className="w-4 h-4 text-friendly-yellow" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-4 h-4 text-oaec-warning" viewBox="0 0 24 24" fill="currentColor">
                   <rect x="3" y="3" width="18" height="18" rx="2"/>
                 </svg>
-                <span className="text-sm font-semibold text-gray-700">Parkeerplaats</span>
-                <span className="text-xs text-gray-400">({parkedParts.length} onderdelen)</span>
+                <span className="text-sm font-semibold text-oaec-text">Parkeerplaats</span>
+                <span className="text-xs text-oaec-text-muted">({parkedParts.length} onderdelen)</span>
               </div>
               <div
                 onDragOver={(e) => handleDragOver(e, 'parking', 0)}
@@ -285,12 +286,12 @@ export default function ManualEditor({ results, onSave, onClose }) {
                 onDrop={(e) => handleDrop(e, 'parking', 0)}
                 className={`min-h-16 border-2 border-dashed rounded-lg p-3 flex flex-wrap gap-2 transition-colors ${
                   dragOverTarget?.type === 'parking'
-                    ? 'bg-verdigris/10 border-verdigris'
-                    : 'bg-friendly-yellow/10 border-friendly-yellow/50'
+                    ? 'bg-oaec-accent/10 border-oaec-accent'
+                    : 'bg-oaec-warning/10 border-oaec-warning/50'
                 }`}
               >
                 {parkedParts.length === 0 ? (
-                  <span className="text-sm text-gray-400 italic">Sleep onderdelen hierheen om ze tijdelijk te parkeren...</span>
+                  <span className="text-sm text-oaec-text-muted italic">Sleep onderdelen hierheen om ze tijdelijk te parkeren...</span>
                 ) : (
                   parkedParts.map((part) => {
                     const colorIdx = (part.number - 1) % partColors.length
@@ -302,16 +303,16 @@ export default function ManualEditor({ results, onSave, onClose }) {
                         onDragStart={() => handleDragStart(part, 'parking', 0)}
                         onClick={() => setSelectedPart(part)}
                         className={`${colors.bg} ${colors.border} border rounded-lg p-2 cursor-grab active:cursor-grabbing select-none ${
-                          selectedPart?.number === part.number ? 'ring-2 ring-violet' : ''
+                          selectedPart?.number === part.number ? 'ring-2 ring-oaec-accent' : ''
                         }`}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="w-5 h-5 bg-violet text-white rounded-full flex items-center justify-center text-xs font-bold">
+                          <span className="w-5 h-5 bg-oaec-accent text-oaec-bg rounded-full flex items-center justify-center text-xs font-bold">
                             {part.number}
                           </span>
                           <div className="text-xs">
                             <div className="font-medium">{part.name}</div>
-                            <div className="text-gray-500">{part.length}×{part.width}</div>
+                            <div className="text-gray-500">{part.length}x{part.width}</div>
                           </div>
                         </div>
                       </div>
@@ -327,55 +328,58 @@ export default function ManualEditor({ results, onSave, onClose }) {
                 const scale = calcScale(sheet)
                 const efficiency = calcEfficiency(sheet)
                 const isDropTarget = dragOverTarget?.type === 'sheet' && dragOverTarget?.index === sheetIndex
-                
+
                 return (
                   <div key={sheetIndex} className="flex-shrink-0">
                     {/* Sheet header */}
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold text-violet">
-                          {sheet.isVirtual ? '♻️' : ''} Plaat {sheetIndex + 1}
+                        <span className="text-sm font-semibold text-oaec-accent">
+                          {sheet.isVirtual ? '♻' : ''} Plaat {sheetIndex + 1}
                         </span>
-                        <span className="text-xs text-gray-400">{sheet.name}</span>
+                        <span className="text-xs text-oaec-text-muted">{sheet.name}</span>
                       </div>
                       <span className={`text-xs px-2 py-1 rounded ${
-                        efficiency >= 70 ? 'bg-verdigris/10 text-verdigris' : 'bg-friendly-yellow/20 text-yellow-700'
+                        efficiency >= 70 ? 'bg-oaec-success/10 text-oaec-success' : 'bg-oaec-warning/20 text-oaec-warning'
                       }`}>
                         {efficiency.toFixed(1)}%
                       </span>
                     </div>
-                    
+
                     {/* Sheet diagram */}
                     <div
                       onDragOver={(e) => handleDragOver(e, 'sheet', sheetIndex)}
                       onDragLeave={handleDragLeave}
                       onDrop={(e) => handleDrop(e, 'sheet', sheetIndex)}
-                      className={`bg-white border-2 rounded-lg relative transition-colors ${
-                        isDropTarget ? 'border-verdigris bg-verdigris/5' : 'border-gray-200'
+                      className={`bg-oaec-bg-lighter border-2 rounded-lg relative transition-colors ${
+                        isDropTarget ? 'border-oaec-accent bg-oaec-accent/5' : ''
                       }`}
                       style={{
                         width: sheet.length * scale + 40,
-                        height: sheet.width * scale + 40
+                        height: sheet.width * scale + 40,
+                        ...(!isDropTarget ? { borderColor: 'rgba(217, 119, 6, 0.2)' } : {})
                       }}
                     >
                       {/* Plaat achtergrond */}
                       <div
-                        className="absolute bg-gray-50 border border-gray-200"
+                        className="absolute"
                         style={{
                           left: 20,
                           top: 20,
                           width: sheet.length * scale,
-                          height: sheet.width * scale
+                          height: sheet.width * scale,
+                          background: '#2E2E36',
+                          border: '1px solid rgba(217, 119, 6, 0.2)'
                         }}
                       />
-                      
+
                       {/* Parts */}
                       {sheet.parts.map((part) => {
                         const colorIdx = (part.number - 1) % partColors.length
                         const colors = partColors[colorIdx]
                         const isSelected = selectedPart?.number === part.number
                         const isDragging = draggedPart?.part.number === part.number
-                        
+
                         return (
                           <div
                             key={part.number}
@@ -383,7 +387,7 @@ export default function ManualEditor({ results, onSave, onClose }) {
                             onDragStart={() => handleDragStart(part, 'sheet', sheetIndex)}
                             onClick={() => setSelectedPart(part)}
                             className={`absolute ${colors.bg} ${colors.border} border rounded cursor-grab active:cursor-grabbing select-none flex items-center justify-center transition-all ${
-                              isSelected ? 'ring-2 ring-violet ring-offset-1 z-10' : ''
+                              isSelected ? 'ring-2 ring-oaec-accent ring-offset-1 z-10' : ''
                             } ${isDragging ? 'opacity-50' : ''}`}
                             style={{
                               left: 20 + part.x * scale,
@@ -397,25 +401,25 @@ export default function ManualEditor({ results, onSave, onClose }) {
                               {part.length * scale > 50 && part.width * scale > 30 && (
                                 <>
                                   <div className="text-xs truncate">{part.name}</div>
-                                  <div className="text-xs text-gray-500">{part.length}×{part.width}</div>
+                                  <div className="text-xs text-gray-500">{part.length}x{part.width}</div>
                                 </>
                               )}
                             </div>
                           </div>
                         )
                       })}
-                      
+
                       {/* Drop indicator */}
                       {isDropTarget && sheet.parts.length === 0 && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-verdigris text-sm font-medium">Laat hier los</span>
+                          <span className="text-oaec-accent text-sm font-medium">Laat hier los</span>
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Sheet dimensions */}
-                    <div className="mt-1 text-xs text-gray-400 text-center">
-                      {sheet.length} × {sheet.width} mm
+                    <div className="mt-1 text-xs text-oaec-text-muted text-center">
+                      {sheet.length} x {sheet.width} mm
                     </div>
                   </div>
                 )
@@ -424,33 +428,33 @@ export default function ManualEditor({ results, onSave, onClose }) {
           </div>
 
           {/* Sidebar */}
-          <div className="w-64 border-l border-gray-200 bg-white p-4 flex flex-col">
+          <div className="w-64 bg-oaec-bg-lighter p-4 flex flex-col" style={{ borderLeft: '1px solid rgba(217, 119, 6, 0.15)' }}>
             {/* Selected part info */}
             <div className="mb-4">
-              <h3 className="text-sm font-semibold text-violet mb-3">
+              <h3 className="text-sm font-semibold text-oaec-accent mb-3">
                 {selectedPart ? 'Geselecteerd onderdeel' : 'Selecteer een onderdeel'}
               </h3>
-              
+
               {selectedPart ? (
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Nummer:</span>
-                    <span className="font-medium">#{selectedPart.number}</span>
+                    <span className="text-oaec-text-muted">Nummer:</span>
+                    <span className="font-medium text-oaec-text">#{selectedPart.number}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Naam:</span>
-                    <span className="font-medium truncate ml-2">{selectedPart.name}</span>
+                    <span className="text-oaec-text-muted">Naam:</span>
+                    <span className="font-medium text-oaec-text truncate ml-2">{selectedPart.name}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Afmeting:</span>
-                    <span className="font-medium">{selectedPart.length} × {selectedPart.width}</span>
+                    <span className="text-oaec-text-muted">Afmeting:</span>
+                    <span className="font-medium text-oaec-text">{selectedPart.length} x {selectedPart.width}</span>
                   </div>
                   {selectedPart.rotated && (
-                    <div className="text-xs text-verdigris">↻ Geroteerd</div>
+                    <div className="text-xs text-oaec-accent">Geroteerd</div>
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-gray-400">Klik op een onderdeel om acties te zien</p>
+                <p className="text-sm text-oaec-text-muted">Klik op een onderdeel om acties te zien</p>
               )}
             </div>
 
@@ -459,17 +463,17 @@ export default function ManualEditor({ results, onSave, onClose }) {
               <div className="space-y-2">
                 <button
                   onClick={handleRotateSelected}
-                  className="w-full px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors text-left flex items-center gap-2"
+                  className="w-full px-3 py-2 text-sm bg-oaec-bg hover:bg-oaec-accent/10 rounded-lg transition-colors text-left flex items-center gap-2 text-oaec-text-secondary"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/>
                     <path d="M21 3v5h-5"/>
                   </svg>
-                  90° roteren
+                  90 graden roteren
                 </button>
                 <button
                   onClick={handleParkSelected}
-                  className="w-full px-3 py-2 text-sm bg-friendly-yellow/20 hover:bg-friendly-yellow/30 text-yellow-700 rounded-lg transition-colors text-left flex items-center gap-2"
+                  className="w-full px-3 py-2 text-sm bg-oaec-warning/10 hover:bg-oaec-warning/20 text-oaec-warning rounded-lg transition-colors text-left flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -482,25 +486,26 @@ export default function ManualEditor({ results, onSave, onClose }) {
 
             {/* Parts overview */}
             <div className="mt-6 flex-1 overflow-auto">
-              <h3 className="text-sm font-semibold text-violet mb-2">Alle onderdelen</h3>
+              <h3 className="text-sm font-semibold text-oaec-accent mb-2">Alle onderdelen</h3>
               <div className="space-y-1">
                 {sheets.flatMap(s => s.parts).concat(parkedParts).sort((a, b) => a.number - b.number).map(part => {
                   const isParked = parkedParts.some(p => p.number === part.number)
                   const sheetIdx = sheets.findIndex(s => s.parts.some(p => p.number === part.number))
-                  
+
                   return (
                     <div
                       key={part.number}
                       onClick={() => setSelectedPart(part)}
                       className={`text-xs p-2 rounded cursor-pointer transition-colors ${
                         selectedPart?.number === part.number
-                          ? 'bg-violet/10 border border-violet'
-                          : 'hover:bg-gray-100'
+                          ? 'bg-oaec-accent/10 text-oaec-accent'
+                          : 'hover:bg-oaec-bg text-oaec-text-secondary'
                       }`}
+                      style={selectedPart?.number === part.number ? { border: '1px solid rgba(217, 119, 6, 0.3)' } : {}}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-medium">#{part.number} {part.name}</span>
-                        <span className={isParked ? 'text-yellow-600' : 'text-gray-400'}>
+                        <span className={isParked ? 'text-oaec-warning' : 'text-oaec-text-muted'}>
                           {isParked ? 'Geparkeerd' : `Plaat ${sheetIdx + 1}`}
                         </span>
                       </div>
