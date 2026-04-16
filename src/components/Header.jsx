@@ -3,7 +3,7 @@
  * Bevat logo, titel en actie knoppen
  * OpenAEC Dark Theme met amber accent
  */
-export default function Header({ onSave, onOpen, onExport, onHelp }) {
+export default function Header({ onSave, onOpen, onExport, onHelp, onBackstage }) {
   return (
     <header className="bg-oaec-bg text-oaec-text px-8 py-3 flex justify-between items-center"
       style={{ borderBottom: '1px solid rgba(217, 119, 6, 0.15)' }}>
@@ -22,6 +22,19 @@ export default function Header({ onSave, onOpen, onExport, onHelp }) {
       </div>
 
       <div className="flex gap-2">
+        {/* Bestand (Backstage) */}
+        <button
+          onClick={onBackstage}
+          className="px-4 py-2 text-sm text-oaec-text-secondary bg-white/10 border border-white/20 rounded hover:bg-white/20 transition-colors flex items-center gap-2"
+          title="Project beheer (openen, opslaan, nieuw)"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          Bestand
+        </button>
+
         {/* Open */}
         <button
           onClick={onOpen}

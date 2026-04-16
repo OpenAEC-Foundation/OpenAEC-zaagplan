@@ -6,6 +6,9 @@ import PartsList from './components/PartsList'
 import CuttingDiagram from './components/CuttingDiagram'
 import PartsTable from './components/PartsTable'
 import HelpModal from './components/HelpModal'
+import Backstage from './components/backstage/Backstage'
+import { ToastContainer } from './components/Toast'
+import { addToast } from './store/toastStore'
 import { optimize1D } from './algorithms/cutting1D'
 import { optimize1DBackend, checkBackendStatus } from './utils/api'
 import { optimize2D } from './algorithms/cutting2D'
@@ -111,6 +114,12 @@ function App() {
 
   // Help modal
   const [showHelp, setShowHelp] = useState(false)
+
+  // Backstage modal
+  const [showBackstage, setShowBackstage] = useState(false)
+
+  // Mock auth state (cutlist heeft geen auth systeem)
+  const isLoggedIn = false
 
   // Save state to localStorage when it changes
   useEffect(() => {
@@ -446,18 +455,102 @@ function App() {
     }
   }
 
+  // Backstage functions
+  const handleNewProject = () => {
+    // Reset to default state for current mode
+    if (mode === '1d') {
+      setStock(default1DStock)
+      setParts(default1DParts)
+    } else {
+      setStock(default2DStock)
+      setParts(default2DParts)
+    }
+
+    // Reset other state
+    setResults(null)
+    setSelectedSheet(0)
+    setBladeThickness(3)
+    setRouterThickness(6)
+    setOptimizationLevel(5)
+    setGrainDirection(true)
+    setMaxSplitParts(2)
+    setJointAllowance(0)
+    setAlgorithm('hybrid')
+  }
+
+  const getCurrentProject = () => {
+    // Return current project state as JSON object
+    return {
+      mode,
+      bladeThickness,
+      routerThickness,
+      optimizationLevel,
+      grainDirection,
+      maxSplitParts,
+      jointAllowance,
+      algorithm,
+      stock,
+      parts,
+      // Metadata
+      name: `Cutlist ${mode.toUpperCase()} Project`,
+      createdAt: new Date().toISOString(),
+      version: "0.1.0"
+    }
+  }
+
+  const setProjectFromData = (projectData) => {
+    // Import project data
+    if (projectData.mode) setMode(projectData.mode)
+    if (projectData.bladeThickness !== undefined) setBladeThickness(projectData.bladeThickness)
+    if (projectData.routerThickness !== undefined) setRouterThickness(projectData.routerThickness)
+    if (projectData.optimizationLevel !== undefined) setOptimizationLevel(projectData.optimizationLevel)
+    if (projectData.grainDirection !== undefined) setGrainDirection(projectData.grainDirection)
+    if (projectData.maxSplitParts !== undefined) setMaxSplitParts(projectData.maxSplitParts)
+    if (projectData.jointAllowance !== undefined) setJointAllowance(projectData.jointAllowance)
+    if (projectData.algorithm) setAlgorithm(projectData.algorithm)
+    if (projectData.stock && Array.isArray(projectData.stock)) setStock(projectData.stock)
+    if (projectData.parts && Array.isArray(projectData.parts)) setParts(projectData.parts)
+
+    // Clear results
+    setResults(null)
+    setSelectedSheet(0)
+  }
+
   return (
     <div className="h-screen bg-oaec-bg flex flex-col overflow-hidden">
       {/* Header */}
-      <Header 
-        onSave={handleSave} 
-        onOpen={handleOpen} 
-        onExport={handleExport} 
-        onHelp={() => setShowHelp(true)} 
+      <Header
+        onSave={handleSave}
+        onOpen={handleOpen}
+        onExport={handleExport}
+        onHelp={() => setShowHelp(true)}
+        onBackstage={() => setShowBackstage(true)}
       />
 
       {/* Help Modal */}
       <HelpModal isOpen={showHelp} onClose={() => setShowHelp(false)} />
+
+      {/* Backstage Modal */}
+      <Backstage
+        open={showBackstage}
+        onClose={() => setShowBackstage(false)}
+        onOpenSettings={() => {
+          // Voor nu geen separate settings modal - alle settings zijn al in de sidebar
+          setShowBackstage(false)
+        }}
+        onNavigate={(path) => {
+          // Voor nu geen routing - close modal
+          setShowBackstage(false)
+        }}
+        project={getCurrentProject()}
+        setProject={setProjectFromData}
+        isLoggedIn={isLoggedIn}
+        addToast={addToast}
+        onNewProject={handleNewProject}
+      />
+
+      {/* Toast Container */}
+      <ToastContainer />
 
       {/* Main Content */}
       <div className="flex flex-1 min-h-0">
